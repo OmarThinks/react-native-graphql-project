@@ -5,9 +5,7 @@ const gqlClient = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-// const client = ...
-
-client
+gqlClient
   .query({
     query: gql`
       query GetLocations {

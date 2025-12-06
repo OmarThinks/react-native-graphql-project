@@ -13,7 +13,7 @@ import { createContext, use, Provider, useContext } from "react";
 import { Toast } from "toastify-react-native";
 import { router } from "expo-router";
 
-const GET_PRODUCTS = gql`
+const GET_PRODUCTS_QUERY = gql`
   query GetProducts {
     products {
       id
@@ -37,8 +37,8 @@ const ProductListContext = createContext<{
   deleteProduct: (id: number) => void;
 } | null>(null);
 
-export default function Index() {
-  const { loading, error, data, refetch } = useQuery(GET_PRODUCTS);
+function Index() {
+  const { loading, error, data, refetch } = useQuery(GET_PRODUCTS_QUERY);
   const [deleteProductGQL] = useMutation(deleteProductMutation);
 
   if (loading) return <Text>Loading...</Text>;
@@ -142,3 +142,6 @@ const ProductCard = ({ product }: { product: ProductType }) => {
     </View>
   );
 };
+
+export default Index;
+export { GET_PRODUCTS_QUERY };

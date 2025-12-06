@@ -11,6 +11,7 @@ import {
 import { FontAwesome6 } from "@expo/vector-icons";
 import { createContext, use, Provider, useContext } from "react";
 import { Toast } from "toastify-react-native";
+import { router } from "expo-router";
 
 const GET_PRODUCTS = gql`
   query GetProducts {
@@ -75,10 +76,7 @@ export default function Index() {
           ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
         />
       </ProductListContext.Provider>
-      <Button
-        title="Test Toast"
-        onPress={() => Toast.success("This is a success toast!")}
-      />
+      <Button title="Add Product" onPress={() => router.push("/addProduct")} />
     </View>
   );
 }

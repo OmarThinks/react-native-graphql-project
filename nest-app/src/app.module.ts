@@ -10,7 +10,7 @@ import { DataSource } from 'typeorm';
 
 @Module({
   imports: [
-    /*GraphQLModule.forRoot<ApolloDriverConfig>({
+    GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       graphiql: true,
       playground: true,
@@ -18,7 +18,6 @@ import { DataSource } from 'typeorm';
       autoSchemaFile: true,
     }),
     ProductsModule,
-*/
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: './test.sqlite',

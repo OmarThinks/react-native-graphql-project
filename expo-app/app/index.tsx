@@ -1,36 +1,67 @@
 import { Text, View } from "react-native";
 import { apolloClient } from "./_layout";
 import { gql } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
+import { FlatList } from "react-native";
+
+const GET_PRODUCTS = gql`
+  query GetProducts {
+    products {
+      id
+      name
+      description
+      price
+    }
+  }
+`;
 
 export default function Index() {
+  const { loading, error, data } = useQuery(GET_PRODUCTS);
+
+  if (loading) return <Text>Loading...</Text>;
+  if (error) return <Text>Error: {error.message}</Text>;
+
   return (
     <View
       style={{
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
+        alignSelf: "stretch",
+        padding: 16,
       }}
     >
-      <Text
-        onPress={() => {
-          apolloClient
-            .query({
-              query: gql`
-                query GetProducts {
-                  products {
-                    id
-                    name
-                    description
-                    price
-                  }
-                }
-              `,
-            })
-            .then((result) => console.log(JSON.stringify(result)));
-        }}
-      >
-        Edit app/index.tsx to edit this screen.
-      </Text>
+      <FlatList
+        data={data.products}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => <ProductCard product={item} />}
+      />
     </View>
   );
 }
+
+type ProductType = {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+};
+
+const ProductCard = ({ product }: { product: ProductType }) => {
+  return (
+    <View
+      style={{
+        borderWidth: 1,
+        borderColor: "#ccc",
+        borderRadius: 8,
+        padding: 16,
+        marginBottom: 16,
+        //width: "80%",
+      }}
+    >
+      <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 8 }}>
+        {product.name}
+      </Text>
+      <Text style={{ marginBottom: 8 }}>{product.description}</Text>
+      <Text style={{ fontSize: 16, fontWeight: "600" }}>${product.price}</Text>
+    </View>
+  );
+};

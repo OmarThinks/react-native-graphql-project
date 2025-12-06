@@ -44,7 +44,9 @@ export class ProductsService {
       return { success: false, message: `Product with ID ${id} not found` };
     }
 
-    return this.productsRepository.save(product);
+    await this.productsRepository.save(product);
+
+    return { success: true };
   }
 
   async remove(id: number): Promise<{ success: boolean; message?: string }> {

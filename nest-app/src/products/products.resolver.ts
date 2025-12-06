@@ -1,17 +1,16 @@
 import {
-  Resolver,
-  Query,
-  Mutation,
   Args,
-  Int,
-  ObjectType,
-  FieldType,
   Field,
+  Int,
+  Mutation,
+  ObjectType,
+  Query,
+  Resolver,
 } from '@nestjs/graphql';
-import { ProductsService } from './products.service';
-import { Product } from './entities/product.entity';
 import { CreateProductInput } from './dto/create-product.input';
 import { UpdateProductInput } from './dto/update-product.input';
+import { Product } from './entities/product.entity';
+import { ProductsService } from './products.service';
 
 @ObjectType()
 class ResponseMessage {
@@ -42,7 +41,7 @@ export class ProductsResolver {
     return this.productsService.findOne(id);
   }
 
-  @Mutation(() => Product)
+  @Mutation(() => ResponseMessage)
   updateProduct(
     @Args('updateProductInput') updateProductInput: UpdateProductInput,
   ) {

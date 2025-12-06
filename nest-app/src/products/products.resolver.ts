@@ -1,8 +1,25 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Int,
+  ObjectType,
+  FieldType,
+  Field,
+} from '@nestjs/graphql';
 import { ProductsService } from './products.service';
 import { Product } from './entities/product.entity';
 import { CreateProductInput } from './dto/create-product.input';
 import { UpdateProductInput } from './dto/update-product.input';
+
+@ObjectType()
+class ResponseMessage {
+  @Field(() => Boolean, { description: 'The unique identifier of the product' })
+  success: boolean;
+  @Field(() => String, { description: 'The message', nullable: true })
+  message?: string;
+}
 
 @Resolver(() => Product)
 export class ProductsResolver {
@@ -35,8 +52,9 @@ export class ProductsResolver {
     );
   }
 
-  @Mutation(() => Product)
-  removeProduct(@Args('id', { type: () => Int }) id: number) {
-    return this.productsService.remove(id);
+  @Mutation(() => ResponseMessage)
+  async removeProduct(@Args('id', { type: () => Int }) id: number) {
+    const result = await this.productsService.remove(id);
+    return result;
   }
 }

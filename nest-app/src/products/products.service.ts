@@ -47,7 +47,7 @@ export class ProductsService {
     return this.productsRepository.save(product);
   }
 
-  async remove(id: number) {
+  async remove(id: number): Promise<{ success: boolean; message?: string }> {
     try {
       await this.productsRepository.delete(id);
 

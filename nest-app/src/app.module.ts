@@ -4,10 +4,13 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ProductsModule } from './products/products.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Product } from './products/entities/product.entity';
+import { DataSource } from 'typeorm';
 
 @Module({
   imports: [
-    GraphQLModule.forRoot<ApolloDriverConfig>({
+    /*GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       graphiql: true,
       playground: true,
@@ -15,8 +18,17 @@ import { ProductsModule } from './products/products.module';
       autoSchemaFile: true,
     }),
     ProductsModule,
+*/
+    TypeOrmModule.forRoot({
+      type: 'sqlite',
+      database: './test.sqlite',
+      entities: [Product],
+      synchronize: true,
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private dataSource: DataSource) {}
+}

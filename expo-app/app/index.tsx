@@ -1,4 +1,6 @@
 import { Text, View } from "react-native";
+import { apolloClient } from "./_layout";
+import { gql } from "@apollo/client";
 
 export default function Index() {
   return (
@@ -9,7 +11,26 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
+      <Text
+        onPress={() => {
+          apolloClient
+            .query({
+              query: gql`
+                query GetProducts {
+                  products {
+                    id
+                    name
+                    description
+                    price
+                  }
+                }
+              `,
+            })
+            .then((result) => console.log(JSON.stringify(result)));
+        }}
+      >
+        Edit app/index.tsx to edit this screen.
+      </Text>
     </View>
   );
 }

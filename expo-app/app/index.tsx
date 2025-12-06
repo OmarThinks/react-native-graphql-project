@@ -47,6 +47,7 @@ export default function Index() {
     deleteProductGQL({ variables: { id } }).then((result) => {
       if (result.data.removeProduct.success) {
         refetch();
+        Toast.success("Product deleted successfully");
       } else {
         Alert.alert(
           "Error deleting product",

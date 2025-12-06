@@ -1,10 +1,11 @@
-import { View, Text, TextInput, Button } from "react-native";
-import React, { useState } from "react";
-import { GET_PRODUCTS_QUERY } from "./index";
-import { useMutation, useQuery } from "@apollo/client/react";
 import { gql } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client/react";
 import { router } from "expo-router";
+import React, { useState } from "react";
+import { Button, Text, TextInput, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Toast } from "toastify-react-native";
+import { GET_PRODUCTS_QUERY } from "./index";
 
 const ADD_PRODUCT_MUTATION = gql`
   mutation AddProduct($name: String!, $description: String!, $price: Float!) {
@@ -31,7 +32,7 @@ const AddProduct = () => {
   const [addProductMutation] = useMutation(ADD_PRODUCT_MUTATION);
 
   return (
-    <View
+    <SafeAreaView
       style={{
         flex: 1,
         justifyContent: "flex-start",
@@ -99,7 +100,7 @@ const AddProduct = () => {
             });
         }}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 

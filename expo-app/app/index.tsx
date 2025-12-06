@@ -1,5 +1,8 @@
 import { gql } from "@apollo/client";
-import { useQuery, useMutation } from "@apollo/client/react";
+import { useMutation, useQuery } from "@apollo/client/react";
+import { FontAwesome6 } from "@expo/vector-icons";
+import { router } from "expo-router";
+import { createContext, useContext } from "react";
 import {
   Alert,
   Button,
@@ -8,10 +11,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { FontAwesome6 } from "@expo/vector-icons";
-import { createContext, use, Provider, useContext } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Toast } from "toastify-react-native";
-import { router } from "expo-router";
 
 const GET_PRODUCTS_QUERY = gql`
   query GetProducts {
@@ -59,11 +60,11 @@ function Index() {
   };
 
   return (
-    <View
+    <SafeAreaView
       style={{
         flex: 1,
         alignSelf: "stretch",
-        padding: 16,
+        //padding: 16,
       }}
     >
       <ProductListContext.Provider value={{ deleteProduct }}>
@@ -74,10 +75,18 @@ function Index() {
           onRefresh={refetch}
           refreshing={loading}
           ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
+          contentContainerStyle={{ padding: 16 }}
         />
       </ProductListContext.Provider>
-      <Button title="Add Product" onPress={() => router.push("/addProduct")} />
-    </View>
+      <View
+        style={{ alignSelf: "stretch", paddingHorizontal: 16, paddingTop: 8 }}
+      >
+        <Button
+          title="Add Product"
+          onPress={() => router.push("/addProduct")}
+        />
+      </View>
+    </SafeAreaView>
   );
 }
 

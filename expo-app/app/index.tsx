@@ -1,8 +1,16 @@
 import { gql } from "@apollo/client";
 import { useQuery, useMutation } from "@apollo/client/react";
-import { Alert, FlatList, Text, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  Button,
+  FlatList,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { createContext, use, Provider, useContext } from "react";
+import { Toast } from "toastify-react-native";
 
 const GET_PRODUCTS = gql`
   query GetProducts {
@@ -66,6 +74,10 @@ export default function Index() {
           ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
         />
       </ProductListContext.Provider>
+      <Button
+        title="Test Toast"
+        onPress={() => Toast.success("This is a success toast!")}
+      />
     </View>
   );
 }

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Injectable } from '@nestjs/common';
 import { CreateProductInput } from './dto/create-product.input';
 import { UpdateProductInput } from './dto/update-product.input';
@@ -12,7 +14,7 @@ export class ProductsService {
     private productsRepository: Repository<Product>,
   ) {}
 
-  create(createProductInput: CreateProductInput) {
+  async create(createProductInput: CreateProductInput) {
     const newProduct = this.productsRepository.create({
       ...createProductInput,
     });
@@ -20,21 +22,39 @@ export class ProductsService {
   }
 
   findAll() {
-    //return `This action returns all products`;
-    //return [];
     return this.productsRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} product`;
+  async findOne(id: number) {
+    const product = await this.productsRepository.findOneBy({ id });
+
+    if (!product) {
+      return { success: false, message: `Product with ID ${id} not found` };
+    }
+
+    return product;
   }
 
-  update(id: number, updateProductInput: UpdateProductInput) {
-    return `This action updates a #${id} product`;
+  async update(id: number, updateProductInput: UpdateProductInput) {
+    const product = await this.productsRepository.preload({
+      ...updateProductInput,
+    });
+
+    if (!product) {
+      return { success: false, message: `Product with ID ${id} not found` };
+    }
+
+    return this.productsRepository.save(product);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} product`;
+  async remove(id: number) {
+    try {
+      await this.productsRepository.delete(id);
+
+      return { success: true };
+    } catch (error) {
+      return { success: false, message: error.message };
+    }
   }
 }
 

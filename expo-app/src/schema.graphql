@@ -1,0 +1,100 @@
+"""
+The unique identifier of the product
+"""
+scalar Boolean
+
+"""
+The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point).
+"""
+scalar Float
+
+"""
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
+"""
+scalar Int
+
+"""
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+"""
+scalar String
+
+type Product {
+  """
+  The unique identifier of the product
+  """
+  id: Int!
+
+  """
+  The name of the product
+  """
+  name: String!
+
+  """
+  The description of the product
+  """
+  description: String!
+
+  """
+  The price of the product
+  """
+  price: Float!
+}
+
+type ResponseMessage {
+  """
+  The unique identifier of the product
+  """
+  success: Boolean!
+
+  """
+  The message
+  """
+  message: String
+}
+
+input CreateProductInput {
+  """
+  The name of the product
+  """
+  name: String!
+
+  """
+  The description of the product
+  """
+  description: String!
+
+  """
+  The price of the product
+  """
+  price: Float!
+}
+
+input UpdateProductInput {
+  """
+  The name of the product
+  """
+  name: String
+
+  """
+  The description of the product
+  """
+  description: String
+
+  """
+  The price of the product
+  """
+  price: Float
+
+  id: Int!
+}
+
+type Query {
+  products: [Product!]!
+  product(id: Int!): Product!
+}
+
+type Mutation {
+  createProduct(createProductInput: CreateProductInput!): Product!
+  updateProduct(updateProductInput: UpdateProductInput!): ResponseMessage!
+  removeProduct(id: Int!): ResponseMessage!
+}
